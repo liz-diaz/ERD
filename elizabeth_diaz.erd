@@ -1,0 +1,86 @@
+erdiagram RetailCompany
+notation=crowsfoot
+
+// Customers entity
+entity Customer {
+    Cus_Id: INTEGER key
+    Cus_fname: VARCHAR(50)
+    Cus_lname: VARCHAR(50)
+}
+
+// Invoice entity
+entity Invoice {
+    invoice_cid: INTEGER key
+    invoice_date: DATE
+    product_code: VARCHAR(20)
+}
+
+// Manufacturer entity
+entity Manufacturer {
+    man_ID: INTEGER key
+    man_name: VARCHAR(100)
+    man_location: VARCHAR(200)
+    man_website: VARCHAR(200)
+}
+
+// Product entity
+entity Product {
+    product_code: VARCHAR(20) key
+    product_name: VARCHAR(100)
+    product_price: DECIMAL(10,2)
+    product_man: INTEGER
+    product_qoh: INTEGER
+    product_model: VARCHAR(50)
+    product_decal: VARCHAR(100)
+}
+
+// Subscription entity
+entity Subscription {
+    sub_name: VARCHAR(100)
+    sub_type: VARCHAR(50)
+    customer_id: INTEGER
+    product_code: VARCHAR(20)
+}
+
+// Orders From RC To entity
+entity OrdersFromRCTo {
+    man_id: INTEGER
+    product_code: VARCHAR(20)
+    order_num: INTEGER key
+    order_date: DATE
+}
+
+// Customer-Invoice Relationship
+relationship HasInvoice {
+    Customer[1] -> Invoice[0..N]
+}
+
+// Product-Invoice Relationship
+relationship InvoiceContains {
+    Product[1] -> Invoice[0..N]
+}
+
+// Manufacturer-Product Relationship
+relationship Manufactures {
+    Manufacturer[1] -> Product[0..N]
+}
+
+// Customer-Subscription Relationship
+relationship Subscribes {
+    Customer[1] -> Subscription[0..N]
+}
+
+// Product-Subscription Relationship
+relationship SubscribedTo {
+    Product[1] -> Subscription[0..N]
+}
+
+// Manufacturer-Orders Relationship
+relationship Places {
+    Manufacturer[1] -> OrdersFromRCTo[0..N]
+}
+
+// Product-Orders Relationship
+relationship OrderedIn {
+    Product[1] -> OrdersFromRCTo[0..N]
+}
